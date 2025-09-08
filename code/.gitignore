@@ -1,0 +1,15 @@
+# Node.js dependencies
+/node_modules
+/npm-debug.log
+/yarn-error.log
+
+# Build outputs
+/frontend/dist
+/frontend/build
+
+# Environment variables
+.env
+
+# Optional system files
+.DS_Store
+*.log
