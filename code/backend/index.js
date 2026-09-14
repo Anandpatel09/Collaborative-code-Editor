@@ -8,6 +8,8 @@ import axios from "axios";
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "*" } });
+const pistonUrl = process.env.PISTON_API_URL || "https://emkc.org/api/v2/piston/execute";
+const pistonApiKey = process.env.PISTON_API_KEY;
 
 const rooms = new Map();
 
@@ -64,18 +66,28 @@ io.on("connection", (socket) => {
   socket.on("compileCode", async ({ code, roomId, language, version, input }) => {
     if (!rooms.has(roomId)) return;
     try {
-      const response = await axios.post("https://emkc.org/api/v2/piston/execute", {
-        language,
-        version,
-        files: [{ content: code }],
-        stdin: input,
-      });
+      const response = await axios.post(
+        pistonUrl,
+        {
+          language,
+          version,
+          files: [{ content: code }],
+          stdin: input,
+        },
+        {
+          headers: pistonApiKey ? { Authorization: pistonApiKey } : undefined,
+          timeout: 30000,
+        }
+      );
 
       io.to(roomId).emit("codeResponse", response.data);
     } catch (err) {
-      console.error("Execution Error:", err.message);
+      const status = err.response?.status;
+      const upstreamMessage = err.response?.data?.message;
+      const message = upstreamMessage || err.message;
+      console.error(`Execution Error${status ? ` (${status})` : ""}:`, message);
       io.to(roomId).emit("codeResponse", {
-        run: { output: "Error executing code. Check server logs." },
+        run: { output: `Execution failed${status ? ` (${status})` : ""}: ${message}` },
       });
     }
   });

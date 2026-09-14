@@ -134,7 +134,7 @@ const App = () => {
           <button className="run-btn" onClick={joinRoom}>
             Join Room
           </button>
-        <h3>Made with 💛 by Anand </h3>
+        <h3>Made with 💛 by Anand Patel </h3>
         </div>
       </div>
     );
