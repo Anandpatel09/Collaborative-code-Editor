@@ -1,6 +1,6 @@
 # Code Collaborator
 
-Code Collaborator is a real-time collaborative coding platform that allows multiple users to work together on code from different locations. Users can create or join coding sessions, edit code, communicate with other participants, and collaborate in real time.
+Code Collaborator is a real-time collaborative coding platform that allows multiple users to work together on code from different locations. Users can create or join coding sessions, edit code, communicate with other participants, and collaborate in real time with Other Users .
 
 ## 🚀 Features
 
